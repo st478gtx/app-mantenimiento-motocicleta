@@ -1,78 +1,87 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { BarChart3, ClipboardList, Package, Users } from 'lucide-react'
+import { monthlyData, months, statsCardTemplates } from '../data/dashboardStaticData'
+import { motocicletasService, clientesService } from '../services'
+import './DashboardPage.css'
 
-const statsCards = [
-  {
-    title: 'Clientes',
-    value: 120,
-    iconBg: '#eef2ff',
-    iconColor: '#4f7cff',
-    trend: '↑ 8% este mes',
-    trendColor: 'text-emerald-600',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="9" cy="8" r="3" />
-        <path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6" />
-      </svg>
-    )
-  },
-  {
-    title: 'Almaceneros',
-    value: 83,
-    iconBg: '#fffbeb',
-    iconColor: '#f59e0b',
-    trend: '↑ 4% este mes',
-    trendColor: 'text-emerald-600',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M4 7l8-4 8 4-8 4-8-4z" />
-        <path d="M4 7v10l8 4 8-4V7" />
-      </svg>
-    )
-  },
-  {
-    title: 'Órdenes activas',
-    value: 24,
-    iconBg: '#fff0f0',
-    iconColor: '#e8414a',
-    trend: '↓ 2% este mes',
-    trendColor: 'text-red-500',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="4" y="4" width="16" height="16" rx="3" />
-        <path d="M8 9h8M8 13h8M8 17h5" />
-      </svg>
-    )
-  },
-  {
-    title: 'Reportes nuevos',
-    value: 9,
-    iconBg: '#ecfdf5',
-    iconColor: '#10b981',
-    trend: '↑ 12% este mes',
-    trendColor: 'text-emerald-600',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M5 19V9" />
-        <path d="M12 19V5" />
-        <path d="M19 19v-7" />
-        <path d="M3 19h18" />
-      </svg>
-    )
-  }
-]
-
-const orders = [
-  { cliente: 'Ana Torres', id: '#00412', fecha: '02 Ago 2026', estado: 'Pendiente' },
-  { cliente: 'Carlos Vega', id: '#00411', fecha: '01 Ago 2026', estado: 'Pagado' },
-  { cliente: 'Lucia Ramos', id: '#00410', fecha: '31 Jul 2026', estado: 'Pendiente' },
-  { cliente: 'Mario Salas', id: '#00409', fecha: '30 Jul 2026', estado: 'Pagado' },
-  { cliente: 'Elena Prado', id: '#00408', fecha: '30 Jul 2026', estado: 'Pendiente' }
-]
-
-const monthlyData = [38, 52, 47, 68, 63, 79, 74, 86, 82, 91, 88, 96]
-const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+const statIcons = {
+  users: Users,
+  package: Package,
+  clipboard: ClipboardList,
+  chart: BarChart3
+}
 
 export default function DashboardPage() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  const [clientesForCard, setClientesForCard] = useState([])
+  const [motocicletasForCard, setMotocicletasForCard] = useState([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadData() {
+      setIsLoading(true)
+      setError('')
+
+      try {
+        const [clientesForCardData, motocicletasForCardData] = await Promise.all([
+          clientesService.listarClientesForCard(),
+          motocicletasService.listarMotocicletasForCard()
+        ])
+
+        if (!isMounted) {
+          return
+        }
+
+        setClientesForCard(clientesForCardData)
+        setMotocicletasForCard(motocicletasForCardData)
+      } catch {
+        if (isMounted) {
+          setError('No se pudo cargar la información del dashboard.')
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadData()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const statsCards = useMemo(
+    () =>
+      statsCardTemplates.map((template) => {
+        const IconComponent = statIcons[template.iconKey]
+
+        const baseCard = {
+          ...template,
+          icon: IconComponent ? <IconComponent className="dashboard__stat-icon" /> : null
+        }
+
+        if (template.key === 'clientes') {
+          return { ...baseCard, ...clientesForCard }
+        }
+
+        if (template.key === 'motocicletas') {
+          return { ...baseCard, ...motocicletasForCard }
+        }
+
+        if (template.key === 'ordenesActivas') {
+          return { ...baseCard }
+        }
+
+        return { ...baseCard }
+      }),
+    [motocicletasForCard.length, clientesForCard.total]
+  )
+
   const chartPoints = useMemo(() => {
     const width = 760
     const height = 260
@@ -102,35 +111,44 @@ export default function DashboardPage() {
   const areaD = `${pathD} L ${chartPoints[chartPoints.length - 1].x} 220 L ${chartPoints[0].x} 220 Z`
 
   return (
-    <section className="p-4 md:p-8">
-      <div className="flex flex-wrap gap-4">
+    <section className="dashboard">
+      {/* Header */}
+      {error && (
+        <div className="dashboard__error">
+          {error}
+        </div>
+      )}
+
+      {/* Stats Cards */}
+      <div className="dashboard__stats-grid">
         {statsCards.map((card) => (
-          <article key={card.title} className="min-w-52 flex-1 rounded-xl bg-[var(--card-bg)] p-5 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.45)]">
-            <div className="mb-5 flex items-start justify-between gap-4">
-              <p className="text-sm font-medium text-[var(--text-secondary)]">{card.title}</p>
-              <div className="grid h-11 w-11 place-items-center rounded-xl" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
+          <article key={card.title} className="dashboard__stat-card">
+            <div className="dashboard__stat-head">
+              <p className="dashboard__stat-title">{card.title}</p>
+              <div className="dashboard__stat-icon-wrap" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
                 {card.icon}
               </div>
             </div>
-            <p className="mb-2 text-3xl font-bold leading-none">{card.value}</p>
-            <p className={`text-sm font-medium ${card.trendColor}`}>{card.trend}</p>
+            <p className="dashboard__stat-value">{isLoading ? '...' : card.total}</p>
+            <p className={`dashboard__stat-trend ${card.tendencia === 'decremento' ? 'is-negative' : 'is-positive'}`}>{card.tendencia === 'decremento' ? '↓' : '↑'} {card.variacionPorcentual}% este mes</p>
           </article>
         ))}
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-4">
-        <article className="min-w-80 flex-[2_1_620px] rounded-xl bg-[var(--card-bg)] p-5 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.45)]">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold">Órdenes por mes</h2>
-            <select className="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600 outline-none focus:border-[var(--accent)]">
+      {/* Charts and Orders */}
+      <div className="dashboard__content-grid">
+        <article className="dashboard__chart-card">
+          <div className="dashboard__chart-head">
+            <h2 className="dashboard__card-title">Órdenes por mes</h2>
+            <select className="dashboard__year-select">
               <option>2026</option>
               <option>2025</option>
               <option>2024</option>
             </select>
           </div>
 
-          <div className="overflow-x-auto">
-            <svg viewBox="0 0 760 260" className="min-w-[660px] w-full" role="img" aria-label="Grafica de ordenes por mes">
+          <div className="dashboard__chart-scroll">
+            <svg viewBox="0 0 760 260" className="dashboard__chart-svg" role="img" aria-label="Grafica de ordenes por mes">
               <defs>
                 <linearGradient id="redArea" x1="0" x2="0" y1="0" y2="1">
                   <stop offset="0%" stopColor="#e8414a" stopOpacity="0.3" />
@@ -161,22 +179,25 @@ export default function DashboardPage() {
           </div>
         </article>
 
-        <article className="min-w-72 flex-1 rounded-xl bg-[var(--card-bg)] p-5 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.45)]">
-          <h2 className="mb-3 text-lg font-semibold">Últimas órdenes</h2>
-          <div className="space-y-0">
-            {orders.map((order) => (
-              <div key={order.id} className="flex items-start justify-between border-b border-slate-100 py-3 last:border-b-0">
+        <article className="dashboard__orders-card">
+          <h2 className="dashboard__card-title dashboard__card-title--spaced">Últimas órdenes</h2>
+          <div>
+            {!isLoading && ultimasOrdenes.length === 0 && (
+              <p className="dashboard__orders-empty">No hay órdenes recientes para mostrar.</p>
+            )}
+            {ultimasOrdenes.map((order) => (
+              <div key={order.id} className="dashboard__order-row">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--text-primary)]">{order.cliente}</p>
-                  <p className="text-xs text-[var(--text-secondary)]">{order.id}</p>
-                  <p className="mt-1 text-xs text-[var(--text-secondary)]">{order.fecha}</p>
+                  <p className="dashboard__order-client">{order.cliente}</p>
+                  <p className="dashboard__order-meta">{order.id}</p>
+                  <p className="dashboard__order-meta dashboard__order-date">{order.fechaLabel}</p>
                 </div>
                 <span
-                  className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                    order.estado === 'Pagado' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'
+                  className={`dashboard__order-status ${
+                    order.estadoPago === 'Pagado' ? 'is-paid' : 'is-pending'
                   }`}
                 >
-                  {order.estado}
+                  {order.estadoPago}
                 </span>
               </div>
             ))}
@@ -184,7 +205,7 @@ export default function DashboardPage() {
 
           <button
             type="button"
-            className="mt-4 h-10 w-full rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+            className="dashboard__orders-button"
           >
             Ver todas las órdenes
           </button>

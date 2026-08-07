@@ -3,6 +3,7 @@ import BaseLayout from './layouts/BaseLayout'
 import DashboardPage from './pages/DashboardPage'
 import SectionPage from './pages/SectionPage'
 
+// Fuente unica para construir rutas secundarias y mantener menu/rutas sincronizados.
 const sectionRoutes = [
   {
     path: 'clientes',
@@ -10,9 +11,9 @@ const sectionRoutes = [
     description: 'Administra la información de tus clientes desde este módulo.'
   },
   {
-    path: 'almaceneros',
-    title: 'Gestión de almaceneros',
-    description: 'Supervisa al personal y tareas de almacén en tiempo real.'
+    path: 'motocicletas',
+    title: 'Gestión de motocicletas',
+    description: 'Administra el padrón de motocicletas, marcas y estados operativos.'
   },
   {
     path: 'ordenes',
@@ -23,6 +24,11 @@ const sectionRoutes = [
     path: 'inventario',
     title: 'Control de inventario',
     description: 'Visualiza existencias y movimientos de repuestos y suministros.'
+  },
+  {
+    path: 'historial',
+    title: 'Historial',
+    description: 'Consulta eventos, cambios y trazabilidad operativa del sistema.'
   },
   {
     path: 'reportes',
@@ -39,8 +45,12 @@ const sectionRoutes = [
 export default function App() {
   return (
     <Routes>
+      {/* Layout principal: sidebar y header persistentes para todas las vistas hijas */}
       <Route path="/" element={<BaseLayout />}>
+        {/* Ruta de inicio (index) para renderizar el dashboard sin segmento adicional */}
         <Route index element={<DashboardPage />} />
+
+        {/* Rutas dinamicas: cada objeto en sectionRoutes crea una pagina de seccion */}
         {sectionRoutes.map((route) => (
           <Route
             key={route.path}
@@ -48,6 +58,8 @@ export default function App() {
             element={<SectionPage title={route.title} description={route.description} />}
           />
         ))}
+
+        {/* Fallback: cualquier ruta no reconocida dentro del layout vuelve a Inicio */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
