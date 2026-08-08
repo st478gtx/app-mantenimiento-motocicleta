@@ -40,8 +40,8 @@ const motocicletas = [
 ]
 
 const motocicletasService = {
-  async listar() {
-    return simulateAsync(cloneArray(motocicletas))
+  async listarMotocicletas() {
+    return simulateAsync([...motocicletas])
   }
 }
 

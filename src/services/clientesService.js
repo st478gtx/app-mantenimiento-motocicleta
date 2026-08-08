@@ -50,7 +50,7 @@ const clientes = [
 
 const clientesService = {
   async listarClientes() {
-    return simulateAsync(cloneArray(clientes))
+    return simulateAsync([...clientes])
   }
 }
 

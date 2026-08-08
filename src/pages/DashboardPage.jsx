@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BarChart3, ClipboardList, Package, Users } from 'lucide-react'
-import { monthlyData, months, statsCardTemplates } from '../data/dashboardStaticData'
+import { monthlyData, months, statsCardTemplates, ultimasOrdenes } from '../data/dashboardStaticData'
 import { motocicletasService, clientesService } from '../services'
 import './DashboardPage.css'
 
@@ -15,8 +15,8 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const [clientesForCard, setClientesForCard] = useState([])
-  const [motocicletasForCard, setMotocicletasForCard] = useState([])
+  const [clientes, setClientes] = useState([])
+  const [motocicletas, setMotocicletas] = useState([])
 
   useEffect(() => {
     let isMounted = true
@@ -26,17 +26,17 @@ export default function DashboardPage() {
       setError('')
 
       try {
-        const [clientesForCardData, motocicletasForCardData] = await Promise.all([
-          clientesService.listarClientesForCard(),
-          motocicletasService.listarMotocicletasForCard()
+        const [clientesFromServer, motocicletasFromServer] = await Promise.all([
+          clientesService.listarClientes(),
+          motocicletasService.listarMotocicletas()
         ])
 
         if (!isMounted) {
           return
         }
 
-        setClientesForCard(clientesForCardData)
-        setMotocicletasForCard(motocicletasForCardData)
+        setClientes(clientesFromServer)
+        setMotocicletas(motocicletasFromServer)
       } catch {
         if (isMounted) {
           setError('No se pudo cargar la información del dashboard.')
@@ -66,11 +66,11 @@ export default function DashboardPage() {
         }
 
         if (template.key === 'clientes') {
-          return { ...baseCard, ...clientesForCard }
+          return { ...baseCard, ...clientes }
         }
 
         if (template.key === 'motocicletas') {
-          return { ...baseCard, ...motocicletasForCard }
+          return { ...baseCard, ...motocicletas }
         }
 
         if (template.key === 'ordenesActivas') {
@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
         return { ...baseCard }
       }),
-    [motocicletasForCard.length, clientesForCard.total]
+    [motocicletas, clientes]
   )
 
   const chartPoints = useMemo(() => {
