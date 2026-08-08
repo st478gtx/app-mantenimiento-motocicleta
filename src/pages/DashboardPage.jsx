@@ -1,5 +1,8 @@
-import { clientes, motocicletas, ordenes } from '../data/staticData'
+import { useState } from 'react'
+import { ordenes } from '../data/staticData'
 import { ORDENES_ESTADOS } from '../util/constants'
+import { getClientes } from '../services/clientesService'
+import { getMotocicletas } from '../services/motocicletasService'
 import {
   dashboardChartConfig,
   dashboardYearOptions,
@@ -17,23 +20,25 @@ import {
 } from '../components/dashboard'
 import './DashboardPage.css'
 
-const completedOrdersCount = ordenes.filter((order) => order.estado === ORDENES_ESTADOS.COMPLETADA).length
-
-const statsCards = buildStatsCards({
-  templates: statsCardTemplates,
-  totalsByKey: {
-    clientes: clientes.length,
-    motocicletas: motocicletas.length,
-    ordenes: ordenes.length,
-    ordenesCompletadas: completedOrdersCount
-  },
-  subtitlesByKey: statSubtitleByKey,
-  iconComponentsByKey: statIcons
-})
 const chartData = buildChartData(months, monthlyData)
 const orderRows = buildOrderRows(ordenes)
+const completedOrdersCount = ordenes.filter((order) => order.estado === ORDENES_ESTADOS.COMPLETADA).length
 
 export default function DashboardPage() {
+  const [clientes] = useState(() => getClientes())
+  const [motocicletas] = useState(() => getMotocicletas())
+
+  const statsCards = buildStatsCards({
+    templates: statsCardTemplates,
+    totalsByKey: {
+      clientes: clientes.length,
+      motocicletas: motocicletas.length,
+      ordenes: ordenes.length,
+      ordenesCompletadas: completedOrdersCount
+    },
+    subtitlesByKey: statSubtitleByKey,
+    iconComponentsByKey: statIcons
+  })
 
   return (
     <section className="dashboard">
