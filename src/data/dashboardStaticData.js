@@ -1,3 +1,7 @@
+// Stats cards
+
+import { CheckCircle2, ClipboardList, Bike, Users } from 'lucide-react'
+
 export const statsCardTemplates = [
   {
     key: 'clientes',
@@ -11,71 +15,49 @@ export const statsCardTemplates = [
     title: 'Motocicletas',
     iconBg: '#fffbeb',
     iconColor: '#f59e0b',
-    iconKey: 'package'
+    iconKey: 'motorcycle'
   },
   {
-    key: 'ordenesActivas',
-    title: 'Órdenes activas',
+    key: 'ordenes',
+    title: 'Órdenes',
     iconBg: '#fff0f0',
     iconColor: '#e8414a',
-    iconKey: 'clipboard',
-
-    total: '9',
-    variacionPorcentual: '12',
-    tendencia: 'incremento',
+    iconKey: 'ordenes',
+    total: '7'
   },
   {
-    key: 'reportesNuevos',
-    title: 'Reportes nuevos',
+    key: 'ordenesCompletadas',
+    title: 'Completadas',
     iconBg: '#ecfdf5',
     iconColor: '#10b981',
-    iconKey: 'chart',
-    
-    total: '9',
-    variacionPorcentual: '12',
-    tendencia: 'incremento',
-    
+    iconKey: 'ordenesCompletadas'
   }
 ]
 
-export const monthlyData = [38, 52, 47, 68, 63, 79, 74, 86, 82, 91, 88, 96]
+export const statIcons = {
+  clientes: Users,
+  motocicletas: Bike,
+  ordenes: ClipboardList,
+  ordenesCompletadas: CheckCircle2
+}
+
+export const statSubtitleByKey = {
+  clientes: 'Total registrados',
+  motocicletas: 'Total registradas',
+  ordenes: 'Órdenes en curso',
+  ordenesCompletadas: 'Órdenes terminadas'
+}
+
+// Chart
 
 export const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
-export const ultimasOrdenes = [
-  {
-    id: 1,
-    cliente: 'Juan Pérez',
-    motocicleta: 'Honda CBR500R',
-    fecha: '2024-06-01',
-    estado: 'En progreso'
-  },
-  {
-    id: 2,
-    cliente: 'María López',
-    motocicleta: 'Yamaha MT-07',
-    fecha: '2024-06-02',
-    estado: 'Completada'
-  },
-  {
-    id: 3,
-    cliente: 'Carlos García',
-    motocicleta: 'Kawasaki Ninja 400',
-    fecha: '2024-06-03',
-    estado: 'Pendiente'
-  },
-  {
-    id: 4,
-    cliente: 'Ana Torres',
-    motocicleta: 'Suzuki GSX-R600',
-    fecha: '2024-06-04',
-    estado: 'En progreso'
-  },
-  {
-    id: 5,
-    cliente: 'Luis Fernández',
-    motocicleta: 'Ducati Monster 821',
-    fecha: '2024-06-05',
-    estado: 'Completada'
-  }
-]
+export const monthlyData = [15, 23, 19, 25, 35, 23, 25, 32, 29, 36, 41, 41]
+
+export const dashboardChartConfig = {
+  height: 340,
+  margin: { top: 8, right: 12, bottom: 8, left: -10 },
+  yTicks: [0, 10, 20, 30, 40, 50]
+}
+
+export const dashboardYearOptions = ['Este año']

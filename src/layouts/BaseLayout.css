@@ -3,12 +3,20 @@
   min-height: 100vh;
   background: var(--main-bg);
   color: var(--text-primary);
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .base-layout__sidebar {
   display: flex;
   flex-direction: column;
+  flex: 0 0 220px;
   width: 220px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
   background: var(--sidebar-bg);
   color: #fff;
   padding: 20px 12px;
