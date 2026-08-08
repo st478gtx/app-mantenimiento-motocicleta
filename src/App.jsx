@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import BaseLayout from './layouts/BaseLayout'
 import DashboardPage from './pages/DashboardPage'
+import ClientesPage from './pages/ClientesPage'
 import SectionPage from './pages/SectionPage'
 
 // Fuente unica para construir rutas secundarias y mantener menu/rutas sincronizados.
 const sectionRoutes = [
-  { path: 'clientes' },
   { path: 'motocicletas' },
   { path: 'ordenes' },
   { path: 'inventario' },
@@ -21,6 +21,8 @@ export default function App() {
       <Route path="/" element={<BaseLayout />}>
         {/* Ruta de inicio (index) para renderizar el dashboard sin segmento adicional */}
         <Route index element={<DashboardPage />} />
+
+        <Route path="clientes" element={<ClientesPage />} />
 
         {/* Rutas dinamicas: cada objeto en sectionRoutes crea una pagina de seccion */}
         {sectionRoutes.map((route) => (
