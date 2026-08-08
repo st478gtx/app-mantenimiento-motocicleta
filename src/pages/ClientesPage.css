@@ -1,9 +1,4 @@
-.clientes-page {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 18px 18px 0;
-}
+/* Entity-specific overrides for the clients page */
 
 .clientes-page__hero {
   display: flex;

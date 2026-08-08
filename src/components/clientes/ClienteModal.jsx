@@ -36,28 +36,28 @@ export default function ClienteModal({ isOpen, title, initialClient, onClose, on
       modalId="clientes-modal-title"
       onClose={onClose}
     >
-      <form className="clientes-modal__form" onSubmit={handleSubmit}>
-        <label className="clientes-modal__field">
+      <form className="crud-modal__form" onSubmit={handleSubmit}>
+        <label className="crud-modal__field">
           <span>Nombre</span>
           <input name="nombre" value={formData.nombre} onChange={handleChange} required />
         </label>
 
-        <label className="clientes-modal__field">
+        <label className="crud-modal__field">
           <span>Correo</span>
           <input name="correo" type="email" value={formData.correo} onChange={handleChange} required />
         </label>
 
-        <label className="clientes-modal__field">
+        <label className="crud-modal__field">
           <span>Teléfono</span>
           <input name="telefono" value={formData.telefono} onChange={handleChange} required />
         </label>
 
-        <label className="clientes-modal__field">
+        <label className="crud-modal__field">
           <span>Distrito</span>
           <input name="distrito" value={formData.distrito} onChange={handleChange} required />
         </label>
 
-        <label className="clientes-modal__checkbox">
+        <label className="crud-modal__checkbox">
           <input name="activo" type="checkbox" checked={formData.activo} onChange={handleChange} />
           <span>Cliente activo</span>
         </label>

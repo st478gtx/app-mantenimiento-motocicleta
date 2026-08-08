@@ -6,37 +6,36 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react'
-import { ClienteModal, ClienteViewModal, ConfirmDeleteModal } from '../components/clientes'
-import { deleteCliente, getClientes, createCliente, updateCliente } from '../services/clientesService'
+import { MotoModal, MotoViewModal, MotoConfirmDeleteModal } from '../components/motocicletas'
+import { deleteMotocicleta, getMotocicletas, createMotocicleta, updateMotocicleta } from '../services/motocicletasService'
 import {
-  buildClientesColumns,
+  buildMotocicletasColumns,
   buildVisiblePages,
   buildPaginationRange,
-  filterClientes,
+  filterMotocicletas,
   PAGE_SIZE,
   STATUS_FILTERS
-} from './clientesPageHelpers.js'
-import './ClientesPage.css'
+} from './motocicletasPageHelpers.js'
 import '../components/ui/CrudPage.css'
 import '../components/ui/CrudModal.css'
 
-export default function ClientesPage() {
-  const [clientes, setClientes] = useState(() => getClientes())
+export default function MotocicletasPage() {
+  const [motos, setMotos] = useState(() => getMotocicletas())
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: PAGE_SIZE })
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingCliente, setEditingCliente] = useState(null)
-  const [viewingCliente, setViewingCliente] = useState(null)
-  const [clienteToDelete, setClienteToDelete] = useState(null)
+  const [editingMoto, setEditingMoto] = useState(null)
+  const [viewingMoto, setViewingMoto] = useState(null)
+  const [motoToDelete, setMotoToDelete] = useState(null)
 
-  const filteredClientes = useMemo(() => {
-    return filterClientes(clientes, query, statusFilter)
-  }, [clientes, query, statusFilter])
+  const filteredMotos = useMemo(() => {
+    return filterMotocicletas(motos, query, statusFilter)
+  }, [motos, query, statusFilter])
 
   const columns = useMemo(
     () =>
-      buildClientesColumns({
+      buildMotocicletasColumns({
         onView: openViewModal,
         onEdit: openEditModal,
         onDelete: handleDelete
@@ -45,7 +44,7 @@ export default function ClientesPage() {
   )
 
   const table = useReactTable({
-    data: filteredClientes,
+    data: filteredMotos,
     columns,
     state: { pagination },
     onPaginationChange: setPagination,
@@ -54,11 +53,11 @@ export default function ClientesPage() {
   })
 
   function resetToFirstPage() {
-    setPagination((currentValue) => ({ ...currentValue, pageIndex: 0 }))
+    setPagination((current) => ({ ...current, pageIndex: 0 }))
   }
 
-  function applyClientesUpdate(nextClientes) {
-    setClientes(nextClientes)
+  function applyMotosUpdate(nextMotos) {
+    setMotos(nextMotos)
     resetToFirstPage()
   }
 
@@ -73,51 +72,49 @@ export default function ClientesPage() {
   }
 
   function openNewModal() {
-    setEditingCliente(null)
+    setEditingMoto(null)
     setIsModalOpen(true)
   }
 
-  function openEditModal(cliente) {
-    setEditingCliente(cliente)
+  function openEditModal(moto) {
+    setEditingMoto(moto)
     setIsModalOpen(true)
   }
 
-  function openViewModal(cliente) {
-    setViewingCliente(cliente)
+  function openViewModal(moto) {
+    setViewingMoto(moto)
   }
 
   function closeModal() {
     setIsModalOpen(false)
-    setEditingCliente(null)
+    setEditingMoto(null)
   }
 
   function closeViewModal() {
-    setViewingCliente(null)
+    setViewingMoto(null)
   }
 
   function handleSubmit(formData) {
-    const nextClientes = editingCliente
-      ? updateCliente(editingCliente.id, formData)
-      : createCliente(formData)
+    const nextMotos = editingMoto
+      ? updateMotocicleta(editingMoto.id, formData)
+      : createMotocicleta(formData)
 
-    applyClientesUpdate(nextClientes)
+    applyMotosUpdate(nextMotos)
     closeModal()
   }
 
-  function handleDelete(cliente) {
-    setClienteToDelete(cliente)
+  function handleDelete(moto) {
+    setMotoToDelete(moto)
   }
 
   function closeDeleteModal() {
-    setClienteToDelete(null)
+    setMotoToDelete(null)
   }
 
   function confirmDelete() {
-    if (!clienteToDelete) {
-      return
-    }
+    if (!motoToDelete) return
 
-    applyClientesUpdate(deleteCliente(clienteToDelete.id))
+    applyMotosUpdate(deleteMotocicleta(motoToDelete.id))
     closeDeleteModal()
   }
 
@@ -125,7 +122,7 @@ export default function ClientesPage() {
   const visibleRows = table.getRowModel().rows.length
   const pageIndex = table.getState().pagination.pageIndex
   const pageSize = table.getState().pagination.pageSize
-  const { rangeStart, rangeEnd } = buildPaginationRange(filteredClientes.length, pageIndex, pageSize, visibleRows)
+  const { rangeStart, rangeEnd } = buildPaginationRange(filteredMotos.length, pageIndex, pageSize, visibleRows)
   const visiblePages = buildVisiblePages(pageCount, pageIndex)
 
   return (
@@ -133,9 +130,9 @@ export default function ClientesPage() {
       <div className="crud-page__hero">
         <div>
           <p className="crud-page__eyebrow">CRUD</p>
-          <h1 className="crud-page__title">Clientes</h1>
+          <h1 className="crud-page__title">Motocicletas</h1>
           <p className="crud-page__description">
-            Administra el listado de clientes con búsqueda, filtro por estado, paginación y edición en modal.
+            Administra el listado de motocicletas con búsqueda, filtro por estado, paginación y edición en modal.
           </p>
         </div>
       </div>
@@ -146,17 +143,14 @@ export default function ClientesPage() {
             <Search size={18} />
             <input
               type="search"
-              placeholder="Buscar cliente, correo o distrito..."
+              placeholder="Buscar motocicleta, color o cliente..."
               value={query}
               onChange={handleQueryChange}
             />
           </label>
 
           <div className="crud-page__select-shell">
-            <select
-              value={statusFilter}
-              onChange={handleStatusFilterChange}
-            >
+            <select value={statusFilter} onChange={handleStatusFilterChange}>
               {STATUS_FILTERS.map((filter) => (
                 <option key={filter.value} value={filter.value}>
                   {filter.label}
@@ -167,7 +161,7 @@ export default function ClientesPage() {
 
           <button type="button" className="crud-page__primary-button" onClick={openNewModal}>
             <Plus size={18} />
-            Nuevo cliente
+            Nueva motocicleta
           </button>
         </div>
 
@@ -188,7 +182,7 @@ export default function ClientesPage() {
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td className="crud-table__empty" colSpan={columns.length}>
-                    No se encontraron clientes con ese criterio.
+                    No se encontraron motocicletas con ese criterio.
                   </td>
                 </tr>
               ) : (
@@ -206,7 +200,7 @@ export default function ClientesPage() {
 
         <div className="crud-page__footer">
           <p className="crud-page__footer-info">
-            Mostrando {rangeStart} a {rangeEnd} de {filteredClientes.length} clientes
+            Mostrando {rangeStart} a {rangeEnd} de {filteredMotos.length} motocicletas
           </p>
 
           <div className="crud-page__pagination">
@@ -242,24 +236,24 @@ export default function ClientesPage() {
         </div>
       </div>
 
-      <ClienteModal
-        key={`${editingCliente?.id ?? 'new'}-${isModalOpen ? 'open' : 'closed'}`}
+      <MotoModal
+        key={`${editingMoto?.id ?? 'new'}-${isModalOpen ? 'open' : 'closed'}`}
         isOpen={isModalOpen}
-        title={editingCliente ? 'Editar cliente' : 'Nuevo cliente'}
-        initialClient={editingCliente}
+        title={editingMoto ? 'Editar motocicleta' : 'Nueva motocicleta'}
+        initialMoto={editingMoto}
         onClose={closeModal}
         onSubmit={handleSubmit}
       />
 
-      <ClienteViewModal
-        isOpen={Boolean(viewingCliente)}
-        cliente={viewingCliente}
+      <MotoViewModal
+        isOpen={Boolean(viewingMoto)}
+        moto={viewingMoto}
         onClose={closeViewModal}
       />
 
-      <ConfirmDeleteModal
-        isOpen={Boolean(clienteToDelete)}
-        cliente={clienteToDelete}
+      <MotoConfirmDeleteModal
+        isOpen={Boolean(motoToDelete)}
+        moto={motoToDelete}
         onCancel={closeDeleteModal}
         onConfirm={confirmDelete}
       />

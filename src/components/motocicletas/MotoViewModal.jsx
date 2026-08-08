@@ -1,36 +1,40 @@
 import CrudModal from '../ui/CrudModal'
 
-export default function ClienteViewModal({ isOpen, cliente, onClose }) {
+export default function MotoViewModal({ isOpen, moto, onClose }) {
   return (
     <CrudModal
-      isOpen={isOpen && Boolean(cliente)}
-      eyebrow="Cliente"
-      title={cliente?.nombre ?? ''}
-      modalId="clientes-view-modal-title"
+      isOpen={isOpen && Boolean(moto)}
+      eyebrow="Motocicleta"
+      title={moto?.nombre ?? ''}
+      modalId="motos-view-modal-title"
       onClose={onClose}
     >
       <dl className="crud-view__grid">
         <div className="crud-view__item">
-          <dt>Correo</dt>
-          <dd>{cliente?.correo}</dd>
+          <dt>Año</dt>
+          <dd>{moto?.año}</dd>
         </div>
         <div className="crud-view__item">
-          <dt>Teléfono</dt>
-          <dd>{cliente?.telefono}</dd>
+          <dt>Tipo</dt>
+          <dd>{moto?.tipo}</dd>
         </div>
         <div className="crud-view__item">
-          <dt>Distrito</dt>
-          <dd>{cliente?.distrito}</dd>
+          <dt>Color</dt>
+          <dd>{moto?.color}</dd>
         </div>
         <div className="crud-view__item">
           <dt>Estado</dt>
-          <dd>{cliente?.activo ? 'Activo' : 'Inactivo'}</dd>
+          <dd>{moto?.activo ? 'Activo' : 'Inactivo'}</dd>
         </div>
         <div className="crud-view__item crud-view__item--full">
-          <dt>Fecha de registro</dt>
+          <dt>Cliente</dt>
+          <dd>{moto?.cliente?.nombre ?? '—'}</dd>
+        </div>
+        <div className="crud-view__item crud-view__item--full">
+          <dt>Fecha de ingreso</dt>
           <dd>
-            {cliente?.fechaRegistro
-              ? new Date(cliente.fechaRegistro).toLocaleDateString('es-PE', {
+            {moto?.fechaIngreso
+              ? new Date(moto.fechaIngreso).toLocaleDateString('es-PE', {
                   day: '2-digit',
                   month: 'short',
                   year: 'numeric'

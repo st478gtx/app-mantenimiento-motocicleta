@@ -138,3 +138,67 @@
 .crud-table__icon-button--danger {
   color: #dc2626;
 }
+
+/* Form fields shared by all CRUD modals */
+
+.crud-modal__message {
+  margin: 0 0 18px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.crud-modal__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.crud-modal__field,
+.crud-modal__checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crud-modal__field--full {
+  grid-column: 1 / -1;
+}
+
+.crud-modal__field span,
+.crud-modal__checkbox span {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.crud-modal__field input,
+.crud-modal__field select {
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: var(--text-primary);
+  font: inherit;
+  width: 100%;
+}
+
+.crud-modal__checkbox {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.crud-modal__checkbox input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .crud-modal__form {
+    grid-template-columns: 1fr;
+  }
+}

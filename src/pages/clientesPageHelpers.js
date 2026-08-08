@@ -35,11 +35,7 @@ function renderClientCell(info) {
   return createElement(
     'div',
     { className: 'clientes-table__client clientes-table__client--with-avatar' },
-    createElement(
-      'div',
-      { className: `clientes-table__avatar ${getAvatarTone(cliente.id)}` },
-      getInitials(info.getValue())
-    ),
+    createElement('div', { className: `crud-table__avatar ${getAvatarTone(cliente.id)}` }, getInitials(info.getValue())),
     createElement(
       'div',
       null,
