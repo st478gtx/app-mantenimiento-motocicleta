@@ -1,0 +1,29 @@
+.page-content {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .page-content {
+    padding: 2rem;
+  }
+}
+
+.page-content__card {
+  border-radius: 0.75rem;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.45);
+}
+
+.page-content__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.page-content__description {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
