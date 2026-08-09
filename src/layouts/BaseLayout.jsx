@@ -36,30 +36,6 @@ const navItems = [
     label: 'Ordenes',
     title: 'Ordenes',
     icon: <ClipboardList className="base-layout__icon" />
-  },
-  {
-    path: '/inventario',
-    label: 'Inventario',
-    title: 'Inventario',
-    icon: <Package className="base-layout__icon" />
-  },
-  {
-    path: '/historial',
-    label: 'Historial',
-    title: 'Historial',
-    icon: <History className="base-layout__icon" />
-  },
-  {
-    path: '/reportes',
-    label: 'Reportes',
-    title: 'Reportes',
-    icon: <BarChart3 className="base-layout__icon" />
-  },
-  {
-    path: '/configuracion',
-    label: 'Configuración',
-    title: 'Configuración',
-    icon: <Settings className="base-layout__icon" />
   }
 ]
 
