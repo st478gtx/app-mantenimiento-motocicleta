@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ordenes } from '../data/staticData'
-import { ORDENES_ESTADOS } from '../util/constants'
+import { ORDENES_ESTADOS } from '../utils/constants'
 import { getClientes } from '../services/clientesService'
 import { getMotocicletas } from '../services/motocicletasService'
 import {

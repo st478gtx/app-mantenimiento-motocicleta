@@ -26,7 +26,7 @@ export function buildStatsCards({
 }
 
 // Orders
-import { ORDENES_ESTADOS } from '../util/constants'
+import { ORDENES_ESTADOS } from '../utils/constants'
 
 export function buildOrderRows(orders, locale = 'es-PE') {
   return orders.slice(-5).map((order) => ({
