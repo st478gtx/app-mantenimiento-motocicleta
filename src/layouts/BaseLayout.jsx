@@ -1,12 +1,8 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
-  BarChart3,
   Bike,
   ClipboardList,
-  History,
   House,
-  Package,
-  Settings,
   Users,
   Wrench
 } from 'lucide-react'
