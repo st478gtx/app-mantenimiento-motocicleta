@@ -4,6 +4,7 @@ import CrudModal from '../ui/CrudModal'
 function buildInitialFormData(initialClient) {
   return {
     nombre: initialClient?.nombre ?? '',
+    apellido: initialClient?.apellido ?? '',
     correo: initialClient?.correo ?? '',
     telefono: initialClient?.telefono ?? '',
     distrito: initialClient?.distrito ?? '',

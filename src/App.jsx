@@ -4,10 +4,11 @@ import DashboardPage from './pages/DashboardPage'
 import MotocicletasPage from './pages/MotocicletasPage'
 import ClientesPage from './pages/ClientesPage'
 import SectionPage from './pages/SectionPage'
+import OrdenTrabajo from './pages/OrdenTrabajo'
+import OrdenesPage from './pages/OrdenesPage'
 
 // Fuente unica para construir rutas secundarias y mantener menu/rutas sincronizados.
 const sectionRoutes = [
-  { path: 'ordenes' },
   { path: 'inventario' },
   { path: 'historial' },
   { path: 'reportes' },
@@ -24,6 +25,8 @@ export default function App() {
 
         <Route path="clientes" element={<ClientesPage />} />
         <Route path="motocicletas" element={<MotocicletasPage />} />
+        <Route path='ordenTrabajo' element={<OrdenTrabajo />} />
+        <Route path='ordenes' element={<OrdenesPage />} />
 
         {/* Rutas dinamicas: cada objeto en sectionRoutes crea una pagina de seccion */}
         {sectionRoutes.map((route) => (

@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { ordenes } from '../data/staticData'
-import { ORDENES_ESTADOS } from '../utils/constants'
 import { getClientes } from '../services/clientesService'
 import { getMotocicletas } from '../services/motocicletasService'
 import {
@@ -19,14 +17,20 @@ import {
   DashboardStatsGrid
 } from '../components/dashboard'
 import './DashboardPage.css'
+import { getOrdenes } from '../services/ordenesService'
 
 const chartData = buildChartData(months, monthlyData)
-const orderRows = buildOrderRows(ordenes)
-const completedOrdersCount = ordenes.filter((order) => order.estado === ORDENES_ESTADOS.COMPLETADA).length
+
 
 export default function DashboardPage() {
+
   const [clientes] = useState(() => getClientes())
   const [motocicletas] = useState(() => getMotocicletas())
+  const [ordenes] = useState(()=> getOrdenes())
+  
+  const orderRows = buildOrderRows(ordenes)
+  const completedOrdersCount = ordenes.filter((order) => order.estado === 'FINALIZADA').length
+  
 
   const statsCards = buildStatsCards({
     templates: statsCardTemplates,

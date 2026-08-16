@@ -115,6 +115,32 @@
   background: #fef3c7;
   color: #b45309;
 }
+.crud-table__statusOrden {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 94px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.crud-table__statusOrden.Pendiente {
+  background: #faceba;
+  color: #f15752;
+}
+
+.crud-table__statusOrden.En-Proceso {
+  background: #adcdfd;
+  color: #1861ce;
+}
+
+.crud-table__statusOrden.Finalizada {
+  background: #dcfce7;
+  color: #15803d;
+}
+
 
 .crud-table__actions {
   display: inline-flex;

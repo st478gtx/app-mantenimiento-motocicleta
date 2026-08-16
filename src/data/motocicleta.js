@@ -1,0 +1,80 @@
+export const motocicletas = [
+    {
+        id: 1,
+        clienteId: 1,
+        placa: "4821-KA",
+        marca: "Honda",
+        modelo: "CB190R",
+        anio: 2024,
+        color: "Negro",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 12500
+    },
+    {
+        id: 2,
+        clienteId: 1,
+        placa: "7315-LB",
+        marca: "Yamaha",
+        modelo: "MT-03",
+        anio: 2023,
+        color: "Azul",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 18900
+    },
+    {
+        id: 3,
+        clienteId: 2,
+        placa: "6152-MC",
+        marca: "Suzuki",
+        modelo: "Gixxer 150",
+        anio: 2022,
+        color: "Rojo",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 24300
+    },
+    {
+        id: 4,
+        clienteId: 3,
+        placa: "8943-PD",
+        marca: "Kawasaki",
+        modelo: "Ninja 400",
+        anio: 2024,
+        color: "Verde",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 8700
+    },
+    {
+        id: 5,
+        clienteId: 4,
+        placa: "3267-RF",
+        marca: "Bajaj",
+        modelo: "Dominar 400",
+        anio: 2023,
+        color: "Gris",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 15600
+    },
+    {
+        id: 6,
+        clienteId: 5,
+        placa: "5184-TG",
+        marca: "Yamaha",
+        modelo: "FZ 25",
+        anio: 2022,
+        color: "Negro",
+        tipo: 'Deportiva',
+        activo: true,
+        fechaIngreso: '2025-09-02',
+        kilometraje: 21400
+    }
+];

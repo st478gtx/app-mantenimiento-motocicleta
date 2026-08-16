@@ -33,6 +33,13 @@ const navItems = [
     title: 'Ordenes',
     icon: <ClipboardList className="base-layout__icon" />
   }
+  // ,
+  // {
+  // path: '/ordenTrabajo',
+  //   label: 'OrdenTrabajo',
+  //   title: 'Orden Trabajo',
+  //   icon: <ClipboardList className="base-layout__icon" />
+  // }
 ]
 
 function normalizePath(pathname) {

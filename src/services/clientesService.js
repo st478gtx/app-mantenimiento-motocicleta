@@ -1,5 +1,6 @@
-import { clientes as initialClientes } from '../data/staticData'
-import { buildNextId, cloneItems, readStorage, writeStorage } from './storageService'
+import { clientes as initialClientes } from '../data/cliente'
+import { obtenerNuevoId } from '../utils/crudHelpers'
+import { cloneItems, readStorage, writeStorage } from './storageService'
 
 const STORAGE_KEY = 'mobiservice-clientes'
 
@@ -18,8 +19,9 @@ export function getClientes() {
 export function createCliente(clienteData) {
   const clientes = read()
   const nextCliente = {
-    id: buildNextId(clientes, 'CLI'),
+    id: obtenerNuevoId(clientes),
     nombre: clienteData.nombre.trim(),
+    apellido: clienteData.apellido.trim(),
     correo: clienteData.correo.trim(),
     telefono: clienteData.telefono.trim(),
     distrito: clienteData.distrito.trim(),
@@ -40,6 +42,7 @@ export function updateCliente(clienteId, clienteData) {
       ? {
           ...cliente,
           nombre: clienteData.nombre.trim(),
+          apellido:clienteData.apellido.trim(),
           correo: clienteData.correo.trim(),
           telefono: clienteData.telefono.trim(),
           distrito: clienteData.distrito.trim(),

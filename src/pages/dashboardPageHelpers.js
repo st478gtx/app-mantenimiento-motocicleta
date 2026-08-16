@@ -26,24 +26,28 @@ export function buildStatsCards({
 }
 
 // Orders
-import { ORDENES_ESTADOS } from '../utils/constants'
+import { formatoId } from '../utils/formatos'
 
-export function buildOrderRows(orders, locale = 'es-PE') {
-  return orders.slice(-5).map((order) => ({
-    ...order,
-    id: String(order.id),
-    code: `OT-${order.id.toString().padStart(3, '0')}`,
-    statusClass:
-      order.estado === ORDENES_ESTADOS.COMPLETADA
-        ? 'is-completed'
-        : order.estado === ORDENES_ESTADOS.EN_PROGRESO
-        ? 'is-in-progress'
-        : 'is-pending',
-    status: order.estado,
-    dateLabel: new Date(order.fecha).toLocaleDateString(locale, {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    })
+export function buildOrderRows(orders) {
+
+  const ordenes = orders.map((ordenDashboard) => ({
+    id: ordenDashboard.id,
+    motocicletaNombre: ordenDashboard.motocicletaNombre,
+    clienteNombre: ordenDashboard.clienteNombre,
+    estado: ordenDashboard.estado,
+    fechaIngreso: ordenDashboard.fechaIngreso,
+  }))
+
+  console.log(ordenes)
+
+  return ordenes.slice(0,4)
+    .sort((a,b) => b.id - a.id)
+    .map((orden) => ({
+    ...orden,
+    id: formatoId(orden.id),
+    motocicletaNombre: orden.motocicletaNombre,
+    clienteNombre: orden.clienteNombre,
+    estado: orden.estado,
+    fechaIngreso: orden.fechaIngreso,
   }))
 }
