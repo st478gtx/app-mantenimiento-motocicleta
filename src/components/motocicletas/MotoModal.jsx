@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import CrudModal from '../ui/CrudModal'
 import { getClientes } from '../../services/clientesService'
+import { regexColor, regexNombre, regexPlaca } from '../../utils/validadores'
+import { InputValidado } from '../ui/InputValidado'
+import { useFormValidation } from '../../utils/validarFormulario'
 
 const TIPO_OPTIONS = ['Deportiva', 'Naked', 'Scooter', 'Touring', 'Cross', 'Otra']
 
 function buildInitialFormData(initialMoto) {  
-
-  console.log("initialMoto: ", initialMoto)
 
   return {
     marca: initialMoto?.marca ?? '',
@@ -16,14 +17,65 @@ function buildInitialFormData(initialMoto) {
     tipo: initialMoto?.tipo ?? TIPO_OPTIONS[0],
     anio: initialMoto?.anio ?? new Date().getFullYear(),
     activo: initialMoto?.activo ?? true,
-    kilometraje: initialMoto?.kilometraje ?? '',
+    //kilometraje: initialMoto?.kilometraje ?? '',
     clienteId: initialMoto?.clienteId ?? ''
   }
 }
 
 export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmit }) {
   const [formData, setFormData] = useState(() => buildInitialFormData(initialMoto))
-  const clientes = getClientes()  
+  const clientes = getClientes()
+
+  const reglasMoto = {
+    marca: {
+        required: true,
+        regex: regexNombre,
+        minLength: 2,
+        maxLength: 30,
+    },
+
+    placa: {
+        required: true,
+        regex: regexPlaca,
+    },
+
+    modelo: {
+        required: false,
+        regex: regexNombre,
+        minLength: 2,
+        maxLength: 30,
+    },
+
+    anio: {
+        required: true,
+        regex: /^\d{4}$/,
+        min: 1901,
+        max: 2100,
+    },
+
+    color: {
+        required: true,
+        regex: regexColor,
+        minLength: 2,
+        maxLength: 30,
+    },
+
+    tipo: {
+        required: true,
+        regex: regexNombre,
+    },
+
+    // kilometraje: {
+    //     required: true,
+    //     regex: /^\d+$/,
+    //     min: 0,
+    // },
+
+    clienteId: {
+        required: true,
+        notEqual: 0,
+    },
+  };
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target
@@ -42,8 +94,7 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
   }
 
   function handleSubmit(event) {
-    event.preventDefault()   
-    console.log("formData: ", formData)
+    event.preventDefault()
 
     onSubmit({
       marca: formData.marca.trim(),
@@ -52,11 +103,16 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
       anio: Number(formData.anio),
       color: formData.color.trim(),
       tipo: formData.tipo,
-      kilometraje: Number(formData.kilometraje),
+      //kilometraje: Number(formData.kilometraje),
       activo: formData.activo,
       clienteId: Number(formData.clienteId)
     })
   }
+
+  const formularioValido = useFormValidation(
+    formData,
+    reglasMoto
+  );
 
   return (
     <CrudModal
@@ -66,16 +122,40 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
       modalId="motos-modal-title"
       onClose={onClose}
     >
-      <form className="crud-modal__form" onSubmit={handleSubmit}>
-        <label className="crud-modal__field">
-          <span>Marca</span>
-          <input name="marca" value={formData.marca} onChange={handleChange} required />
-        </label>
+      <form className="crud-modal__form" onSubmit={handleSubmit}>        
 
-        <label className="crud-modal__field">
-          <span>Color</span>
-          <input name="color" value={formData.color} onChange={handleChange} required />
-        </label>
+        <InputValidado
+          label="Marca"
+          name="marca"
+          style="crud-modal__field"
+          value={formData.marca}
+          onChange={handleChange}
+          rules={reglasMoto.marca}
+          errorMessage="Solo se permiten letras y espacios"
+          successMessage="Marca válida"
+        />
+
+        <InputValidado
+          label="Color"
+          name="color"
+          style="crud-modal__field"
+          value={formData.color}
+          onChange={handleChange}
+          rules={reglasMoto.color}
+          errorMessage="Solo se permiten letras y espacios"
+          successMessage="Color válido"
+        />
+
+        <InputValidado
+          label="Modelo"
+          name="modelo"
+          style="crud-modal__field"
+          value={formData.modelo}
+          onChange={handleChange}
+          rules={reglasMoto.modelo}
+          errorMessage="Solo se permiten letras y espacios"
+          successMessage="Modelo válido"
+        />
 
         <label className="crud-modal__field">
           <span>Tipo</span>
@@ -86,16 +166,30 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
           </select>
         </label>
 
-        <label className="crud-modal__field">
-          <span>Año</span>
-          <input name="anio" type="number" value={formData.anio} onChange={handleChange} min="1900" max="2100" required />
-        </label>
-        <label className="crud-modal__field">
-          <span>Placa</span>
-          <input name="placa" type="text" value={formData.placa} onChange={handleChange} required />
-        </label>
+        <InputValidado
+          label="Año"
+          name="anio"
+          type='number'
+          style="crud-modal__field"
+          value={formData.anio}
+          onChange={handleChange}
+          rules={reglasMoto.anio}
+          errorMessage="Año no válido"
+          successMessage="Año en rango"
+        />
 
-        <label className="crud-modal__field">
+        <InputValidado
+          label="Placa"
+          name="placa"
+          style="crud-modal__field"
+          value={formData.placa}
+          onChange={handleChange}
+          rules={reglasMoto.placa}
+          errorMessage="Formato de placa inválido"
+          successMessage="Placa válida"
+        />
+
+        <label className="crud-modal__field crud-modal__field--full">
           <span>Cliente</span>
           <select name="clienteId" value={formData.clienteId} onChange={(e) => handleClienteChange(e.target.value)} required>
             <option value="">Seleccionar cliente...</option>
@@ -114,7 +208,7 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
           <button type="button" className="crud-modal__button crud-modal__button--ghost" onClick={onClose}>
             Cancelar
           </button>
-          <button type="submit" className="crud-modal__button crud-modal__button--primary">
+          <button type="submit" className="crud-modal__button crud-modal__button--primary" disabled={!formularioValido}>
             Guardar
           </button>
         </div>

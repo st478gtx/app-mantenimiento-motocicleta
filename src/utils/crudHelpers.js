@@ -117,7 +117,7 @@ export function filterByQueryAndStatus(items, query, statusFilter, searchFields)
 export function filterByQueryAndStatusOrden(items, query, statusFilter, searchFields) {
   const normalizedQuery = query.trim().toLowerCase()
 
-  return items.filter((item) => {
+  return items.sort((a, b) => b.id - a.id ).filter((item) => {
     const searchableText = searchFields.map((field) => item[field] ?? '').join(' ').toLowerCase()
     const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery)
     const matchesStatus =

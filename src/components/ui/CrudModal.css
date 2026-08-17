@@ -84,6 +84,11 @@
   color: #fff;
 }
 
+.crud-modal__button--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .crud-modal__button--danger {
   background: #dc2626;
   color: #fff;
@@ -209,6 +214,51 @@
   color: var(--text-primary);
   font: inherit;
   width: 100%;
+}
+
+.crud-modal__field input:focus {
+  border-color: #e5e7eb;
+  outline: none;
+  box-shadow: 0 0 5px #d5d7db;
+}
+
+.input-header {
+  font-size: 0.86rem;
+}
+
+.input-header span {
+  color: #dc2626;
+}
+
+.crud-modal__field input.input-error {
+  border-color: #dc2626;
+  color: #dc2626;
+  box-shadow: 0 0 5px #d46262;
+}
+
+.crud-modal__field input.input-success {
+  border-color: #16a34a;
+  box-shadow: 0 0 5px #16a34a57;
+}
+
+.crud-modal__field .input-message {
+  font-size: .75em;
+}
+
+.input-message.error {
+  color: #dc2626;
+}
+
+.input-message.success {
+  color: #16a34a;
+}
+
+.input-validado input.input-error {
+  border: 1px solid #dc2626;
+}
+
+.input-validado input.input-success {
+  border: 1px solid #16a34a;
 }
 
 .crud-modal__checkbox {

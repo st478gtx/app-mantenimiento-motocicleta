@@ -41,7 +41,7 @@ export function createMotocicleta(motoData) {
     tipo: motoData.tipo.trim(),
     activo: motoData.activo,
     fechaIngreso: new Date().toISOString().slice(0, 10),
-    kilometraje: Number(motoData.kilometraje)
+    //kilometraje: Number(motoData.kilometraje) ?? 0
   }
 
   const next = [nextMoto, ...motocicletas]
@@ -63,7 +63,7 @@ export function updateMotocicleta(motoId, motoData) {
         tipo: motoData.tipo.trim(),
         anio: Number(motoData.anio),
         activo: motoData.activo,
-        kilometraje: Number(motoData.kilometraje),
+        //kilometraje: Number(motoData.kilometraje),
         clienteId: Number(motoData.clienteId)
       }
       : moto

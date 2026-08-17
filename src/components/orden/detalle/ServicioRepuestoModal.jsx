@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import DetalleModal from "./DetalleModal";
 
 import { zonasMoto } from "../../../data/zonasMoto";
 import { servicios } from "../../../data/servicio";
 import { repuestos } from "../../../data/repuesto";
-// import { servicioRepuestos } from "../../../data/servicioRepuesto";
+import { servicioRepuestos } from "../../../data/servicioRepuesto";
 
 import hondaRevel from "../../../assets/honda-cmx-250-c-rebel-250.webp";
 
@@ -28,14 +28,27 @@ function obtenerRepuestosIniciales(detallesIniciales) {
     );
 }
 
+function getRepuestosDeServicio(servicioId) {
+    const relaciones = servicioRepuestos
+        .filter((relacion) =>
+            relacion.servicioId === servicioId
+        );
+
+    const repuestoIds = relaciones.map(
+        (relacion) => relacion.repuestoId
+    );
+
+    return repuestos.filter((repuesto) =>
+        repuestoIds.includes(repuesto.id)
+    );
+}
+
 export default function ServicioRepuestoModal({
     isOpen,
     detallesIniciales = [],
     onClose,
     onConfirm,
 }) {
-    // TODO: BUG
-    const servicioRepuestos = getDetalleServicios();
     const [listRepuestoId, setListRepuestoId] =
         useState(() => {
             const servicioInicial =
@@ -136,12 +149,8 @@ export default function ServicioRepuestoModal({
             )
         );
 
-    /*
-     * Cuando el modal se abre, cargamos las selecciones
-     * que ya existían.
-     *
-     * Esto será importante para EDITAR una orden.
-     */    
+    
+        
 
     /*
      * Seleccionar/deseleccionar servicio.
@@ -298,64 +307,36 @@ export default function ServicioRepuestoModal({
                 repuesto.id
             )
         );
-
+console.log("servicioAgregado:", servicioAgregado);
+console.log("repuestoAgregado:", repuestoAgregado);
+console.log("repuestosSeleccionados:", repuestosSeleccionados);
     /*
      * Construye la estructura que necesita
      * DetalleServicio.
-     *
-     * No agregamos cantidades porque tu
-     * selección solamente indica si está
-     * seleccionado o no.
      */
     function construirDetalles() {
-        return serviciosSeleccionados.map(
-            (servicio) => ({
-                servicioId:
-                    servicio.id,
+        return serviciosSeleccionados.map((servicio) => ({
+        servicioId: servicio.id,
+        cantidad: 1,
+        precioUnitario: servicio.precioBase,
+        subtotal: servicio.precioBase,
+        observaciones: "",
 
-                cantidad: 1,
-
-                precioUnitario:
-                    servicio.precioBase,
-
-                subtotal:
-                    servicio.precioBase,
-
-                observaciones: "",
-
-                repuestos:
-                    repuestosSeleccionados
-                        .filter((repuesto) =>
-                            servicioRepuestos.some(
-                                (relacion) =>
-                                    relacion.servicioId ===
-                                        servicio.id &&
-                                    relacion.repuestoId ===
-                                        repuesto.id
-                            )
-                        )
-                        .map((repuesto) => ({
-                            repuestoId:
-                                repuesto.id,
-
-                            cantidad: 1,
-
-                            precioUnitario:
-                                repuesto.precioVenta,
-
-                            subtotal:
-                                repuesto.precioVenta,
-                        })),
-            })
-        );
-    }
+        repuestos: repuestosSeleccionados.map((repuesto) => ({
+            repuestoId: repuesto.id,
+            cantidad: 1,
+            precioUnitario: repuesto.precioVenta,
+            subtotal: repuesto.precioVenta,
+        })),
+    }));
+}
 
     /*
      * Confirmar selección.
      */
     function handleConfirm() {
         const detalles =
-            construirDetalles();
+            construirDetalles();        
 
         onConfirm(detalles);
     }

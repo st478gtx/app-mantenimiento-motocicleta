@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CrudModal from "../ui/CrudModal";
 import ClienteMotoSelector from "../ui/ClienteMotoSelector";
@@ -8,6 +8,8 @@ import { servicios } from "../../data/servicio";
 import { repuestos } from "../../data/repuesto";
 import { getClientes } from "../../services/clientesService";
 import { getMotocicletas } from "../../services/motocicletasService";
+import { useFormValidation } from "../../utils/validarFormulario";
+import { InputValidado } from "../ui/InputValidado";
 
 const ESTADO_OPTIONS = [
     { label: "Pendiente", value: "PENDIENTE" },
@@ -39,14 +41,14 @@ export default function OrdenModal({
     detallesIniciales = [],
     onClose,
     onSubmit,
-}) {    
-    console.log(initialOrden)
+}) {
+    console.log(initialOrden);
     const [formData, setFormData] = useState(() =>
         buildInitialFormData(initialOrden),
     );
 
-    const clientes = getClientes()
-    const motocicletas = getMotocicletas()
+    const clientes = getClientes();
+    const motocicletas = getMotocicletas();
 
     const [isServiciosModalOpen, setIsServiciosModalOpen] = useState(false);
 
@@ -60,6 +62,46 @@ export default function OrdenModal({
         structuredClone(detallesIniciales),
     );
 
+    useEffect(() => {
+        console.log("detallesServicios CAMBIÓ:", detallesServicios);
+    }, [detallesServicios]);
+
+    const ordenRules = {
+    clienteId: {
+        required: true,
+        notEqual: 0,
+    },
+
+    motocicletaId: {
+        required: true,
+        notEqual: 0,
+    },
+
+    fechaIngreso: {
+        required: true,
+    },
+
+    kilometraje: {
+        required: true,
+        min: 0,
+    },
+
+    estado: {
+        required: true,
+    },
+
+    diagnostico: {
+        required: true,
+        minLength: 5,
+        maxLength: 500,
+    },
+
+    observaciones: {
+        required: false,
+        maxLength: 500,
+    },
+};
+
     const serviciosSeleccionados = detallesServicios
         .map((detalle) =>
             servicios.find(
@@ -68,14 +110,21 @@ export default function OrdenModal({
         )
         .filter(Boolean);
 
-    const repuestosSeleccionados = detallesServicios.flatMap((detalle) =>
-        (detalle.repuestos ?? [])
-            .map((detalleRepuesto) =>
-                repuestos.find((x) => x.id == detalleRepuesto.repuestoId),
-            )
-            .filter(Boolean),
-    );
-
+    const repuestosSeleccionados = [
+        ...new Map(
+            detallesServicios
+                .flatMap((detalle) =>
+                    (detalle.repuestos ?? [])
+                        .map((detalleRepuesto) =>
+                            repuestos.find(
+                                (x) => x.id == detalleRepuesto.repuestoId,
+                            ),
+                        )
+                        .filter(Boolean),
+                )
+                .map((repuesto) => [repuesto.id, repuesto]),
+        ).values(),
+    ];
     const totalServicios = serviciosSeleccionados.reduce(
         (total, servicio) => total + Number(servicio.precioBase),
         0,
@@ -161,6 +210,9 @@ export default function OrdenModal({
         });
     }
 
+    const tieneServicios = serviciosSeleccionados.length > 0;
+    const formularioValido = useFormValidation(formData, ordenRules) && tieneServicios;
+
     return (
         <>
             <CrudModal
@@ -203,7 +255,7 @@ export default function OrdenModal({
                         />
                     </label>
 
-                    <label className="crud-modal__field">
+                    {/* <label className="crud-modal__field">
                         <span>Kilometraje</span>
 
                         <input
@@ -214,7 +266,18 @@ export default function OrdenModal({
                             onChange={handleChange}
                             required
                         />
-                    </label>
+                    </label> */}
+                    <InputValidado 
+                        label="Kilometraje"
+                        name="kilometraje"
+                        type="number"
+                        style="crud-modal__field"
+                        value={formData.kilometraje}
+                        onChange={handleChange}
+                        rules={ordenRules.kilometraje}
+                        errorMessage="Solo se permiten cantidades positivas"
+                        successMessage="Válido"
+                    />
 
                     <label className="crud-modal__field">
                         <span>Estado</span>
@@ -279,7 +342,6 @@ export default function OrdenModal({
 
                             {detallesServicios.length > 0 ? (
                                 <div className="orden-detalles__list">
-                                    
                                     <div className="orden-detalles__section">
                                         <span className="orden-detalles__subtitle">
                                             Servicios
@@ -308,7 +370,6 @@ export default function OrdenModal({
                                         </div>
                                     </div>
 
-                                    
                                     {repuestosSeleccionados.length > 0 && (
                                         <div className="orden-detalles__section">
                                             <span className="orden-detalles__subtitle">
@@ -378,6 +439,7 @@ export default function OrdenModal({
                         <button
                             type="submit"
                             className="crud-modal__button crud-modal__button--primary"
+                            disabled={!formularioValido}
                         >
                             Guardar
                         </button>
@@ -386,7 +448,6 @@ export default function OrdenModal({
             </CrudModal>
 
             <ServicioRepuestoModal
-                key={`${initialOrden?.id ?? "new"}-${isServiciosModalOpen ? "open" : "closed"}`}
                 isOpen={isServiciosModalOpen}
                 detallesIniciales={detallesServicios}
                 onClose={closeServiciosModal}
