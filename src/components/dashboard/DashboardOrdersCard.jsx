@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { getStatusToneOrden } from '../../utils/crudHelpers'
 
 export default function DashboardOrdersCard({ orders }) {
   return (
@@ -10,18 +11,18 @@ export default function DashboardOrdersCard({ orders }) {
         )}
         {orders.map((order) => (
           <div key={order.id} className="dashboard__order-row">
-            <p className="dashboard__order-id">{order.code}</p>
+            <p className="dashboard__order-id">{order.id}</p>
 
             <div className="dashboard__order-details">
-              <p className="dashboard__order-client">{order.cliente.nombre}</p>
-              <p className="dashboard__order-meta dashboard__order-bike">{order.motocicleta.nombre}</p>
+              <p className="dashboard__order-client">{order.clienteNombre}</p>
+              <p className="dashboard__order-meta dashboard__order-bike">{order.motocicletaNombre}</p>
             </div>
 
             <div className="dashboard__order-right">
-              <span className={`dashboard__order-status ${order.statusClass}`}>
-                {order.status}
+              <span className={`crud-table__statusOrden ${getStatusToneOrden(order.estado)}`}>
+                {order.estado}
               </span>
-              <p className="dashboard__order-meta dashboard__order-date">{order.dateLabel}</p>
+              <p className="dashboard__order-meta dashboard__order-date">{order.fechaIngreso}</p>
             </div>
           </div>
         ))}

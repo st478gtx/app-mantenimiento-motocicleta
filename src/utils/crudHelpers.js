@@ -13,6 +13,55 @@ export function getStatusTone(isActive) {
   return isActive ? 'is-active' : 'is-inactive'
 }
 
+export function getStatusLabelOrden(option) {
+
+  let tone = option
+
+  switch (tone) {
+    case "EN_PROCESO":
+      tone = "En proceso"
+      break;
+
+    case "FINALIZADA":
+      tone = "Finalizada"
+      break;
+
+    case "PENDIENTE":
+      tone = "Pendiente"
+      break;
+
+    default:
+      tone = ""
+      break;
+  }
+
+  return tone
+}
+
+export function getStatusToneOrden(option) {
+
+  let tone = option
+
+  switch (tone) {
+    case "EN_PROCESO":
+      tone = "En-Proceso"
+      break;
+
+    case "FINALIZADA":
+      tone = "Finalizada"
+      break;
+
+    case "PENDIENTE":
+      tone = "Pendiente"
+      break;
+
+    default:
+      tone = ""
+      break;
+  }
+  return tone
+}
+
 export function getAvatarTone(id) {
   const numericId = Number.parseInt(String(id).replace(/\D/g, ''), 10)
 
@@ -65,6 +114,19 @@ export function filterByQueryAndStatus(items, query, statusFilter, searchFields)
   })
 }
 
+export function filterByQueryAndStatusOrden(items, query, statusFilter, searchFields) {
+  const normalizedQuery = query.trim().toLowerCase()
+
+  return items.filter((item) => {
+    const searchableText = searchFields.map((field) => item[field] ?? '').join(' ').toLowerCase()
+    const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery)
+    const matchesStatus =
+      statusFilter === 'all' || item.estado === statusFilter
+
+    return matchesQuery && matchesStatus
+  })
+}
+
 export function renderTextCell(info) {
   return createElement('span', { className: 'crud-table__cell-meta' }, info.getValue())
 }
@@ -75,6 +137,20 @@ export function renderStatusCell(info) {
     { className: `crud-table__status ${getStatusTone(info.getValue())}` },
     getStatusLabel(info.getValue())
   )
+}
+
+export function renderStatusOrdenCell(info) {
+  return createElement(
+    'span',
+    { className: `crud-table__statusOrden ${getStatusToneOrden(info.getValue())}` },
+    getStatusLabelOrden(info.getValue())
+  )
+}
+
+export function obtenerNuevoId(lista) {
+  if (lista.length === 0) return 1
+
+  return Math.max(...lista.map(x => x.id)) + 1
 }
 
 export function renderActionsCell({ onView, onEdit, onDelete, entityLabel }, info) {

@@ -9,6 +9,7 @@ import {
   renderActionsCell,
   renderStatusCell
 } from '../utils/crudHelpers'
+import { formatoId } from '../utils/formatos'
 
 const columnHelper = createColumnHelper()
 
@@ -25,7 +26,7 @@ export function filterMotocicletas(motos, query, statusFilter) {
   const normalizedQuery = query.trim().toLowerCase()
 
   return motos.filter((moto) => {
-    const searchableText = [moto.nombre, moto.color, moto.tipo, moto.cliente?.nombre ?? '']
+    const searchableText = [moto.marca, moto.color, moto.tipo, moto.clienteNombre ?? '']
       .join(' ')
       .toLowerCase()
 
@@ -45,27 +46,32 @@ function renderMotoCell(info) {
   return createElement(
     'div',
     { className: 'crud-table__item--with-avatar' },
-    createElement('div', { className: `crud-table__avatar ${getAvatarTone(moto.id)}` }, getInitials(moto.nombre)),
+    // createElement('div', { className: `crud-table__avatar` }, getInitials(moto.modelo)),
     createElement(
       'div',
       null,
-      createElement('p', { className: 'crud-table__item-name' }, moto.nombre),
-      createElement('p', { className: 'crud-table__cell-meta' }, `${moto.año} · ${moto.tipo}`)
+      createElement('p', { className: 'crud-table__item-name' }, moto.marca),
+      createElement('p', { className: 'crud-table__cell-meta' }, `${moto.anio} · ${moto.tipo}`)
     )
   )
 }
 
 export function buildMotocicletasColumns({ onView, onEdit, onDelete }) {
   return [
-    columnHelper.accessor('nombre', {
-      header: 'Motocicleta',
+    columnHelper.accessor('id',{
+      id:'motocicleta',
+      header: 'Id',
+      cell: (info) =>
+        createElement('span', { className: 'crud-table__cell-meta dashboard__order-id' }, formatoId(info.getValue(),'MOTO'))
+    }),
+    columnHelper.accessor('marca', {
+      header: 'Nombre',
       cell: renderMotoCell
     }),
-    columnHelper.display({
-      id: 'cliente',
+    columnHelper.accessor('clienteNombre',{
       header: 'Cliente',
       cell: (info) =>
-        createElement('span', { className: 'crud-table__cell-meta' }, info.row.original.cliente?.nombre ?? '—')
+        createElement('span', { className: 'crud-table__cell-meta' }, info.getValue())
     }),
     columnHelper.accessor('color', {
       header: 'Color',

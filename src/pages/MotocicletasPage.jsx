@@ -16,6 +16,7 @@ import {
   PAGE_SIZE,
   STATUS_FILTERS
 } from './motocicletasPageHelpers.js'
+import { useSnackbar } from '../context/useSnackbar.js'
 import '../components/ui/CrudPage.css'
 import '../components/ui/CrudModal.css'
 
@@ -28,6 +29,8 @@ export default function MotocicletasPage() {
   const [editingMoto, setEditingMoto] = useState(null)
   const [viewingMoto, setViewingMoto] = useState(null)
   const [motoToDelete, setMotoToDelete] = useState(null)
+
+  const { showSnackbar } = useSnackbar()
 
   const filteredMotos = useMemo(() => {
     return filterMotocicletas(motos, query, statusFilter)
@@ -95,12 +98,22 @@ export default function MotocicletasPage() {
   }
 
   function handleSubmit(formData) {
+
+    const isEditing = Boolean(editingMoto)
+
     const nextMotos = editingMoto
       ? updateMotocicleta(editingMoto.id, formData)
       : createMotocicleta(formData)
 
     applyMotosUpdate(nextMotos)
     closeModal()
+
+    showSnackbar(
+    isEditing
+      ? 'Motoclicleta actualizada correctamente'
+      : 'Motocicleta registrada correctamente' , 'info'
+    )
+
   }
 
   function handleDelete(moto) {
@@ -115,6 +128,7 @@ export default function MotocicletasPage() {
     if (!motoToDelete) return
 
     applyMotosUpdate(deleteMotocicleta(motoToDelete.id))
+    showSnackbar('Motocicleta eliminada satifactoriamente.')
     closeDeleteModal()
   }
 

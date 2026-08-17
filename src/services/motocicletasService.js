@@ -1,5 +1,8 @@
-import { motocicletas as initialMotocicletas } from '../data/staticData'
-import { buildNextId, cloneItems, readStorage, writeStorage } from './storageService'
+import { motocicletas as initialMotocicletas } from '../data/motocicleta'
+import { crearMotocicletaConClienteDTO } from '../dto/motocicletaCliente'
+import { obtenerNuevoId } from '../utils/crudHelpers'
+import { getClientes } from './clientesService'
+import { cloneItems, readStorage, writeStorage } from './storageService'
 
 const STORAGE_KEY = 'mobiservice-motocicletas'
 
@@ -11,27 +14,40 @@ function write(motocicletas) {
   writeStorage(STORAGE_KEY, motocicletas)
 }
 
+function toDTO(motocicleta){
+  return crearMotocicletaConClienteDTO(
+    motocicleta,
+    getClientes()
+  )
+}
+
 export function getMotocicletas() {
-  return read()
+
+  const motocicletas = read()
+
+  return cloneItems(motocicletas.map(toDTO))
 }
 
 export function createMotocicleta(motoData) {
   const motocicletas = read()
   const nextMoto = {
-    id: buildNextId(motocicletas, 'MOT'),
-    nombre: motoData.nombre.trim(),
+    id: obtenerNuevoId(motocicletas),
+    clienteId: Number(motoData.clienteId),
+    placa: motoData.placa.trim(),
+    marca: motoData.marca.trim(),
+    modelo: motoData.modelo.trim(),
+    anio: Number(motoData.anio),
     color: motoData.color.trim(),
     tipo: motoData.tipo.trim(),
-    año: Number(motoData.año),
     activo: motoData.activo,
     fechaIngreso: new Date().toISOString().slice(0, 10),
-    cliente: motoData.cliente
+    kilometraje: Number(motoData.kilometraje)
   }
 
   const next = [nextMoto, ...motocicletas]
   write(next)
 
-  return cloneItems(next)
+  return cloneItems(next.map(toDTO))
 }
 
 export function updateMotocicleta(motoId, motoData) {
@@ -39,20 +55,23 @@ export function updateMotocicleta(motoId, motoData) {
   const next = motocicletas.map((moto) =>
     moto.id === motoId
       ? {
-          ...moto,
-          nombre: motoData.nombre.trim(),
-          color: motoData.color.trim(),
-          tipo: motoData.tipo.trim(),
-          año: Number(motoData.año),
-          activo: motoData.activo,
-          cliente: motoData.cliente
-        }
+        ...moto,
+        placa: motoData.placa.trim(),
+        marca: motoData.marca.trim(),
+        color: motoData.color.trim(),
+        modelo: motoData.modelo.trim(),
+        tipo: motoData.tipo.trim(),
+        anio: Number(motoData.anio),
+        activo: motoData.activo,
+        kilometraje: Number(motoData.kilometraje),
+        clienteId: Number(motoData.clienteId)
+      }
       : moto
   )
 
   write(next)
 
-  return cloneItems(next)
+  return cloneItems(next.map(toDTO))
 }
 
 export function deleteMotocicleta(motoId) {
@@ -60,5 +79,5 @@ export function deleteMotocicleta(motoId) {
 
   write(next)
 
-  return cloneItems(next)
+  return cloneItems(next.map(toDTO))
 }

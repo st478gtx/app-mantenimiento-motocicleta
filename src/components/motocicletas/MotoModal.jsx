@@ -4,20 +4,26 @@ import { getClientes } from '../../services/clientesService'
 
 const TIPO_OPTIONS = ['Deportiva', 'Naked', 'Scooter', 'Touring', 'Cross', 'Otra']
 
-function buildInitialFormData(initialMoto) {
+function buildInitialFormData(initialMoto) {  
+
+  console.log("initialMoto: ", initialMoto)
+
   return {
-    nombre: initialMoto?.nombre ?? '',
+    marca: initialMoto?.marca ?? '',
+    placa: initialMoto?.placa ?? '',
     color: initialMoto?.color ?? '',
+    modelo: initialMoto?.modelo ?? '',
     tipo: initialMoto?.tipo ?? TIPO_OPTIONS[0],
-    año: initialMoto?.año ?? new Date().getFullYear(),
+    anio: initialMoto?.anio ?? new Date().getFullYear(),
     activo: initialMoto?.activo ?? true,
-    clienteId: initialMoto?.cliente?.id ?? ''
+    kilometraje: initialMoto?.kilometraje ?? '',
+    clienteId: initialMoto?.clienteId ?? ''
   }
 }
 
 export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmit }) {
   const [formData, setFormData] = useState(() => buildInitialFormData(initialMoto))
-  const clientes = getClientes()
+  const clientes = getClientes()  
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target
@@ -28,17 +34,27 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
     }))
   }
 
+  function handleClienteChange(clienteId) {
+    setFormData((current) => ({
+      ...current,
+      clienteId
+    }) )
+  }
+
   function handleSubmit(event) {
-    event.preventDefault()
-    const cliente = clientes.find((c) => c.id === formData.clienteId)
+    event.preventDefault()   
+    console.log("formData: ", formData)
 
     onSubmit({
-      nombre: formData.nombre.trim(),
+      marca: formData.marca.trim(),
+      placa: formData.placa.trim(),
+      modelo:formData.modelo.trim(),
+      anio: Number(formData.anio),
       color: formData.color.trim(),
       tipo: formData.tipo,
-      año: Number(formData.año),
+      kilometraje: Number(formData.kilometraje),
       activo: formData.activo,
-      cliente: cliente ? { id: cliente.id, nombre: cliente.nombre } : null
+      clienteId: Number(formData.clienteId)
     })
   }
 
@@ -52,8 +68,8 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
     >
       <form className="crud-modal__form" onSubmit={handleSubmit}>
         <label className="crud-modal__field">
-          <span>Nombre</span>
-          <input name="nombre" value={formData.nombre} onChange={handleChange} required />
+          <span>Marca</span>
+          <input name="marca" value={formData.marca} onChange={handleChange} required />
         </label>
 
         <label className="crud-modal__field">
@@ -72,12 +88,16 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
 
         <label className="crud-modal__field">
           <span>Año</span>
-          <input name="año" type="number" value={formData.año} onChange={handleChange} min="1900" max="2100" required />
+          <input name="anio" type="number" value={formData.anio} onChange={handleChange} min="1900" max="2100" required />
+        </label>
+        <label className="crud-modal__field">
+          <span>Placa</span>
+          <input name="placa" type="text" value={formData.placa} onChange={handleChange} required />
         </label>
 
-        <label className="crud-modal__field crud-modal__field--full">
+        <label className="crud-modal__field">
           <span>Cliente</span>
-          <select name="clienteId" value={formData.clienteId} onChange={handleChange} required>
+          <select name="clienteId" value={formData.clienteId} onChange={(e) => handleClienteChange(e.target.value)} required>
             <option value="">Seleccionar cliente...</option>
             {clientes.map((cliente) => (
               <option key={cliente.id} value={cliente.id}>{cliente.nombre}</option>

@@ -1,4 +1,5 @@
 import { Fragment, useMemo, useState } from 'react'
+import { useSnackbar } from '../context/useSnackbar.js'
 import {
   flexRender,
   getCoreRowModel,
@@ -29,6 +30,8 @@ export default function ClientesPage() {
   const [editingCliente, setEditingCliente] = useState(null)
   const [viewingCliente, setViewingCliente] = useState(null)
   const [clienteToDelete, setClienteToDelete] = useState(null)
+
+  const { showSnackbar } = useSnackbar()
 
   const filteredClientes = useMemo(() => {
     return filterClientes(clientes, query, statusFilter)
@@ -96,12 +99,20 @@ export default function ClientesPage() {
   }
 
   function handleSubmit(formData) {
+    const isEditing = Boolean(editingCliente)
+
     const nextClientes = editingCliente
       ? updateCliente(editingCliente.id, formData)
       : createCliente(formData)
 
     applyClientesUpdate(nextClientes)
     closeModal()
+
+    showSnackbar(
+    isEditing
+      ? 'Cliente actualizado correctamente'
+      : 'Cliente registrado correctamente' , 'info'
+    )
   }
 
   function handleDelete(cliente) {
@@ -119,6 +130,7 @@ export default function ClientesPage() {
 
     applyClientesUpdate(deleteCliente(clienteToDelete.id))
     closeDeleteModal()
+    showSnackbar('Cliente eliminado satifactoriamente.')
   }
 
   const pageCount = table.getPageCount() || 1

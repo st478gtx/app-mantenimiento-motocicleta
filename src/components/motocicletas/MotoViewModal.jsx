@@ -12,7 +12,7 @@ export default function MotoViewModal({ isOpen, moto, onClose }) {
       <dl className="crud-view__grid">
         <div className="crud-view__item">
           <dt>Año</dt>
-          <dd>{moto?.año}</dd>
+          <dd>{moto?.anio}</dd>
         </div>
         <div className="crud-view__item">
           <dt>Tipo</dt>
@@ -28,7 +28,7 @@ export default function MotoViewModal({ isOpen, moto, onClose }) {
         </div>
         <div className="crud-view__item crud-view__item--full">
           <dt>Cliente</dt>
-          <dd>{moto?.cliente?.nombre ?? '—'}</dd>
+          <dd>{moto?.clienteNombre ?? '—'}</dd>
         </div>
         <div className="crud-view__item crud-view__item--full">
           <dt>Fecha de ingreso</dt>

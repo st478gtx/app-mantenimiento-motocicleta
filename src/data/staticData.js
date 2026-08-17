@@ -101,7 +101,7 @@ export const motocicletas = [
   }
 ]
 
-import { ORDENES_ESTADOS } from '../util/constants'
+import { ORDENES_ESTADOS } from '../utils/constants'
 
 export const ordenes = [
   {
