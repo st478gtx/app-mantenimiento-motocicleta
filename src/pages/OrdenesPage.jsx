@@ -47,6 +47,7 @@ export default function OrdenesPage() {
     const [editingOrden, setEditingOrden] = useState(null);
     const [viewingOrden, setViewingOrden] = useState(null);
     const [ordenToDelete, setOrdenToDelete] = useState(null);
+
     const [detallesServicios, setDetallesServicios] = useState([]);
 
     const { showSnackbar } = useSnackbar()
@@ -133,7 +134,7 @@ export default function OrdenesPage() {
         } else {
             const nextOrdenes = createOrden(ordenData);
 
-            const nuevaOrden = nextOrdenes[0];
+            const nuevaOrden = nextOrdenes[nextOrdenes.length - 1];
 
             saveDetallesOrden(nuevaOrden.id, detallesServicios);
 

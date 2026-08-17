@@ -2,33 +2,33 @@ export const servicioRepuestos = [
     // Cambio de aceite
     {
         id: 1,
-        servicioId: 1,
-        repuestoId: 1
+        servicioId: 1, // Cambio de aceite
+        repuestoId: 1  // Aceite 10W40
     },
     {
         id: 2,
-        servicioId: 1,
-        repuestoId: 2
+        servicioId: 1, // Cambio de aceite
+        repuestoId: 2 // Filtro de aceite
     },
 
     // Cambio de filtro de aceite
     {
         id: 3,
-        servicioId: 2,
-        repuestoId: 2
+        servicioId: 2, // Cambio de filtro de aceite
+        repuestoId: 2 // Filtro de aceite
     },
 
     // Revisión general del motor
     {
         id: 4,
-        servicioId: 3,
+        servicioId: 3, // Revisión general del motor
         repuestoId: 5
     },
 
     // Ajuste y lubricación de cadena
     {
         id: 5,
-        servicioId: 4,
+        servicioId: 4, // Ajuste y lubricación de cadena
         repuestoId: 7
     },
 

@@ -36,8 +36,6 @@ export default function MotocicletasPage() {
     return filterMotocicletas(motos, query, statusFilter)
   }, [motos, query, statusFilter])
 
-  console.log(filteredMotos)
-
   const columns = useMemo(
     () =>
       buildMotocicletasColumns({

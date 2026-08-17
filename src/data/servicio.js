@@ -1,7 +1,9 @@
 export const servicios = [
+
+    // SERVICIOS DE ZONA MOTOR
     {
         id: 1,
-        zonaId: 1,
+        zonaId: 1, // Zona Motor
         nombre: "Cambio de aceite",
         descripcion: "Cambio de aceite del motor",
         precioBase: 35,
@@ -28,7 +30,7 @@ export const servicios = [
     },
     {
         id: 4,
-        zonaId: 2,
+        zonaId: 2, // Zona Transmisión
         nombre: "Ajuste y lubricación de cadena",
         descripcion: "Limpieza, ajuste y lubricación de la cadena",
         precioBase: 25,
@@ -46,7 +48,7 @@ export const servicios = [
     },
     {
         id: 6,
-        zonaId: 3,
+        zonaId: 3, // Zona Frenos
         nombre: "Revisión de frenos",
         descripcion: "Inspección y regulación del sistema de frenos",
         precioBase: 40,
@@ -64,7 +66,7 @@ export const servicios = [
     },
     {
         id: 8,
-        zonaId: 4,
+        zonaId: 4, // Zona Suspensión
         nombre: "Revisión de suspensión",
         descripcion: "Inspección de suspensión delantera y trasera",
         precioBase: 55,
@@ -73,7 +75,7 @@ export const servicios = [
     },
     {
         id: 9,
-        zonaId: 5,
+        zonaId: 5, // Zona Eléctrica
         nombre: "Revisión del sistema eléctrico",
         descripcion: "Diagnóstico de batería, luces y conexiones",
         precioBase: 45,
@@ -91,7 +93,7 @@ export const servicios = [
     },
     {
         id: 11,
-        zonaId: 6,
+        zonaId: 6, // Zona Combustible
         nombre: "Limpieza del sistema de combustible",
         descripcion: "Limpieza y revisión del sistema de alimentación",
         precioBase: 70,
@@ -100,7 +102,7 @@ export const servicios = [
     },
     {
         id: 12,
-        zonaId: 7,
+        zonaId: 7, // Zona Carrocería
         nombre: "Revisión general de carrocería",
         descripcion: "Inspección de componentes externos",
         precioBase: 30,

@@ -115,6 +115,8 @@
   background: #fef3c7;
   color: #b45309;
 }
+
+/* TODO: Mover a su componente correspondiente */
 .crud-table__statusOrden {
   display: inline-flex;
   align-items: center;

@@ -1,0 +1,42 @@
+TODO:
+
+8 minutos
+Introduccion al proyecto 1.5 minuto
+- Tecnologias usadas
+- Estructura de carpetas
+- React router
+- Navegacion
+
+
+Dashboard 1.5 minutos
+- Data estatica (mencionar tres, cuatro propiedades de los objetos)
+- Mostrar el código de los cards
+- Hacer mencion de las ordenes por mes como en construccion
+- Mostrar el código de las ordenes
+- Mostrar el redirect a ordenes
+
+Clientes 1 minuto
+- Mostrar el servicio de clientes
+
+UI
+- Mostrar la busqueda filtrada 
+- Crear un cliente inactivo
+- Activar un cliente
+
+Código 
+- Mostrar código de busqueda
+
+Motocicletas 2 minutos
+UI
+- Crear una moto inactiva con seleccion de cliente
+- Activar la moto
+
+Código
+- Mostrar código del modal de crear moto con busqueda de cliente
+
+Ordenes 2 minutos
+UI
+- Crear una orden con servicios y repuestos
+
+Código
+- Mostrar código del modal de creacion de orden

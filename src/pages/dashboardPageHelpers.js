@@ -38,10 +38,8 @@ export function buildOrderRows(orders) {
     fechaIngreso: ordenDashboard.fechaIngreso,
   }))
 
-  console.log(ordenes)
-
-  return ordenes.slice(0,4)
-    .sort((a,b) => b.id - a.id)
+  return ordenes.slice(0, 4)
+    .sort((a,b) => b.id - a.id) // orden descendente por id
     .map((orden) => ({
     ...orden,
     id: formatoId(orden.id),

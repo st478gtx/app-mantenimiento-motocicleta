@@ -5,11 +5,13 @@ import DetalleModal from "./DetalleModal";
 import { zonasMoto } from "../../../data/zonasMoto";
 import { servicios } from "../../../data/servicio";
 import { repuestos } from "../../../data/repuesto";
-import { servicioRepuestos } from "../../../data/servicioRepuesto";
+// import { servicioRepuestos } from "../../../data/servicioRepuesto";
 
 import hondaRevel from "../../../assets/honda-cmx-250-c-rebel-250.webp";
 
 import { formatoMoneda } from "../../../utils/moneda";
+
+import { getDetalleServicios } from "../../../services/detalleServicioService";
 
 function obtenerServiciosIniciales(detallesIniciales) {
     return detallesIniciales.map(
@@ -32,6 +34,8 @@ export default function ServicioRepuestoModal({
     onClose,
     onConfirm,
 }) {
+    // TODO: BUG
+    const servicioRepuestos = getDetalleServicios();
     const [listRepuestoId, setListRepuestoId] =
         useState(() => {
             const servicioInicial =

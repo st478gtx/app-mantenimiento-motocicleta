@@ -57,8 +57,8 @@ export function createOrden(ordenData) {
     }
 
     const next = [
+        ...ordenes,
         nextOrden,
-        ...ordenes
     ]
 
     write(next)

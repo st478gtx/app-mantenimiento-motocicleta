@@ -6,7 +6,7 @@ const TIPO_OPTIONS = ['Deportiva', 'Naked', 'Scooter', 'Touring', 'Cross', 'Otra
 
 function buildInitialFormData(initialMoto) {  
 
-  console.log(initialMoto)
+  console.log("initialMoto: ", initialMoto)
 
   return {
     marca: initialMoto?.marca ?? '',
@@ -43,7 +43,7 @@ export default function MotoModal({ isOpen, title, initialMoto, onClose, onSubmi
 
   function handleSubmit(event) {
     event.preventDefault()   
-    console.log(formData)
+    console.log("formData: ", formData)
 
     onSubmit({
       marca: formData.marca.trim(),
