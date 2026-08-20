@@ -10,6 +10,7 @@ import { getClientes } from "../../services/clientesService";
 import { getMotocicletas } from "../../services/motocicletasService";
 import { useFormValidation } from "../../utils/validarFormulario";
 import { InputValidado } from "../ui/InputValidado";
+import { TextareaValidado } from "../ui/TextareaValidado";
 
 const ESTADO_OPTIONS = [
     { label: "Pendiente", value: "PENDIENTE" },
@@ -67,40 +68,40 @@ export default function OrdenModal({
     }, [detallesServicios]);
 
     const ordenRules = {
-    clienteId: {
-        required: true,
-        notEqual: 0,
-    },
+        clienteId: {
+            required: true,
+            notEqual: 0,
+        },
 
-    motocicletaId: {
-        required: true,
-        notEqual: 0,
-    },
+        motocicletaId: {
+            required: true,
+            notEqual: 0,
+        },
 
-    fechaIngreso: {
-        required: true,
-    },
+        fechaIngreso: {
+            required: true,
+        },
 
-    kilometraje: {
-        required: true,
-        min: 0,
-    },
+        kilometraje: {
+            required: true,
+            min: 0,
+        },
 
-    estado: {
-        required: true,
-    },
+        estado: {
+            required: true,
+        },
 
-    diagnostico: {
-        required: true,
-        minLength: 5,
-        maxLength: 500,
-    },
+        diagnostico: {
+            required: true,
+            minLength: 5,
+            maxLength: 500,
+        },
 
-    observaciones: {
-        required: false,
-        maxLength: 500,
-    },
-};
+        observaciones: {
+            required: false,
+            maxLength: 500,
+        },
+    };
 
     const serviciosSeleccionados = detallesServicios
         .map((detalle) =>
@@ -140,7 +141,7 @@ export default function OrdenModal({
     function handleClienteChange(clienteId) {
         setFormData((current) => ({
             ...current,
-            clienteId,
+            clienteId: Number(clienteId),
             motocicletaId: "",
         }));
     }
@@ -148,7 +149,7 @@ export default function OrdenModal({
     function handleMotocicletaChange(motocicletaId) {
         setFormData((current) => ({
             ...current,
-            motocicletaId,
+            motocicletaId: Number(motocicletaId),
         }));
     }
 
@@ -211,7 +212,14 @@ export default function OrdenModal({
     }
 
     const tieneServicios = serviciosSeleccionados.length > 0;
-    const formularioValido = useFormValidation(formData, ordenRules) && tieneServicios;
+    const formularioValido =
+        useFormValidation(formData, ordenRules) && tieneServicios;
+
+    console.log("===== VALIDACIÓN ORDEN =====");
+    console.log("formData:", formData);
+    console.log("ordenRules:", ordenRules);
+    console.log("formularioValido:", formularioValido);
+    console.log("============================");
 
     return (
         <>
@@ -255,19 +263,7 @@ export default function OrdenModal({
                         />
                     </label>
 
-                    {/* <label className="crud-modal__field">
-                        <span>Kilometraje</span>
-
-                        <input
-                            name="kilometraje"
-                            type="number"
-                            min="0"
-                            value={formData.kilometraje}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label> */}
-                    <InputValidado 
+                    <InputValidado
                         label="Kilometraje"
                         name="kilometraje"
                         type="number"
@@ -296,7 +292,7 @@ export default function OrdenModal({
                         </select>
                     </label>
 
-                    <label className="crud-modal__field crud-modal__field--full">
+                    {/* <label className="crud-modal__field crud-modal__field--full">
                         <span>Diagnóstico</span>
 
                         <textarea
@@ -306,7 +302,19 @@ export default function OrdenModal({
                             rows="3"
                             required
                         />
-                    </label>
+                    </label> */}
+
+                    <TextareaValidado
+                        label="Diagnóstico"
+                        name="diagnostico"
+                        value={formData.diagnostico}
+                        onChange={handleChange}
+                        rules={ordenRules.diagnostico}
+                        errorMessage="El diagnóstico debe tener al menos 5 caracteres"
+                        placeholder="Ingrese un diagnóstico..."
+                        rows={5}
+                        style="crud-modal__field crud-modal__field--full"
+                    />
 
                     <label className="crud-modal__field crud-modal__field--full">
                         <span>Observaciones</span>

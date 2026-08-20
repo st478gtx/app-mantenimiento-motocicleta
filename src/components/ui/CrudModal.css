@@ -209,47 +209,73 @@
   height: 42px;
   padding: 0 12px;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   background: #fff;
   color: var(--text-primary);
   font: inherit;
   width: 100%;
 }
 
-.crud-modal__field input:focus {
-  border-color: #e5e7eb;
-  outline: none;
-  box-shadow: 0 0 5px #d5d7db;
+.crud-modal__field textarea {
+  height: 100px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  background: #fff;
+  color: var(--text-primary);
+  font: inherit;
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 6px;
 }
 
-.input-header {
+.crud-modal__field input:focus,
+.crud-modal__field textarea:focus,
+.crud-modal__field select:focus
+{
+  border-color: #e5e7eb;
+  outline: none;
+  box-shadow: 0 0 5px #bfd0f1;
+}
+
+.input-header, .textarea-header {
   font-size: 0.86rem;
 }
 
-.input-header span {
+.input-header span,
+.textarea-header span {
   color: #dc2626;
 }
 
-.crud-modal__field input.input-error {
-  border-color: #dc2626;
-  color: #dc2626;
+.crud-modal__field input.input-error,
+.crud-modal__field textarea.textarea-error {
+  border-color: #db5555;
+  color: #d45f5f;
   box-shadow: 0 0 5px #d46262;
 }
 
-.crud-modal__field input.input-success {
+.crud-modal__field input.input-success,
+.crud-modal__field textarea.textarea-success {
   border-color: #16a34a;
   box-shadow: 0 0 5px #16a34a57;
 }
 
-.crud-modal__field .input-message {
+.crud-modal__field .input-message,
+.crud-modal__field .textarea-message
+{
   font-size: .75em;
 }
 
-.input-message.error {
+.input-message.error,
+.textarea-message.error
+{
   color: #dc2626;
 }
 
-.input-message.success {
+.input-message.success,
+.textarea-message.success {
   color: #16a34a;
 }
 
