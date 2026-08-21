@@ -17,6 +17,10 @@
   padding: 20px;
 }
 
+.extend {
+  width: min(100%, 860px);
+}
+
 .crud-modal__panel--compact {
   width: min(100%, 460px);
 }
@@ -52,6 +56,12 @@
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
+}
+
+.crud-modal__lateral{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Shared action row used inside any CRUD modal form or confirmation */

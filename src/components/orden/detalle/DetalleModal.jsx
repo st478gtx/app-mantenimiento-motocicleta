@@ -1,4 +1,3 @@
-//import PropTypes from "rop-types";
 
 export default function DetalleModal({
     isOpen,
@@ -56,12 +55,3 @@ export default function DetalleModal({
         </div>
     );
 }
-
-// DetalleModal.propTypes = {
-//     isOpen: PropTypes.bool.isRequired,
-//     eyebrow: PropTypes.string.isRequired,
-//     title: PropTypes.string.isRequired,
-//     modalId: PropTypes.string.isRequired,
-//     onClose: PropTypes.func.isRequired,
-//     children: PropTypes.node.isRequired,
-// };

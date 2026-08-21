@@ -299,6 +299,22 @@
     box-shadow: 0 6px 12px -6px rgba(220, 38, 38, 0.7);
 }
 
+.orden-detalles__header {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.orden-detalles__header button {
+    width: 200px;
+}
+
+.orden-detalles__list {
+    padding: 16px 8px;
+    height: 260px;
+    overflow-y: auto;
+}
+
 .orden-detalles__list .breadcrumb-container {
     padding: 10px 0;
 }
@@ -355,6 +371,7 @@
     padding-top: 14px;
     border-top: 1px solid #e5e7eb;
     font-size: 1.05rem;
+    padding-bottom: 8px;
 }
 
 .orden-detalles__total strong {

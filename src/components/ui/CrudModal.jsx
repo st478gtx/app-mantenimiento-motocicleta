@@ -1,12 +1,18 @@
-export default function CrudModal({ isOpen, eyebrow, title, modalId, compact, onClose, children }) {
+export default function CrudModal({ isOpen, eyebrow, title, modalId, compact, onClose, children, isOrden = false }) {
   if (!isOpen) {
     return null
+  }
+
+  let ordenModal = ''
+
+  if(isOrden){
+    ordenModal = 'extend'
   }
 
   return (
     <div className="crud-modal__overlay" role="presentation" onClick={onClose}>
       <div
-        className={`crud-modal__panel${compact ? ' crud-modal__panel--compact' : ''}`}
+        className={`crud-modal__panel${compact ? ' crud-modal__panel--compact' : ''} ${ordenModal}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={modalId}
